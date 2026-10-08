@@ -45,6 +45,11 @@ scripts/ext.conf          what the kit's scripts need to know about this extensi
   of the first) is `Main.wm.insertWorkspace(pos)`: it appends a workspace and moves every
   window from `pos` on along by one, so no workspace moves. `app.js` wraps it to put an
   empty name in at `pos` first (`names.js` `insert`).
+- **Hover**: a half-second rest on the Activities button (`Main.panel.statusArea.activities`,
+  its `notify::hover`) puts the popup up for the current workspace and shows it again
+  every 500 ms, inside the popup's own 600 ms timeout, so it stays while the pointer does
+  and fades as a switch's does once it leaves. `_show` is the one way the extension puts a
+  popup up (hover and rename): only for a named workspace, never over the overview.
 - **Renaming** keeps the `Meta.Workspace`, not its index, while the dialog is open. The
   popup it puts up afterwards is destroyed when any other popup displays, so a quick
   switch never shows two.
@@ -52,8 +57,8 @@ scripts/ext.conf          what the kit's scripts need to know about this extensi
 ## Settings
 
 `rename-shortcut` (`['<Super>F2']`, grabbed with `Main.wm.addKeybinding`),
-`show-indicator` (true: the pencil in the top bar), `title-position` (`top`, `center`),
-`title-size` (`small`, `large`, `huge`). A title's settings are read when a popup is
+`show-indicator` (true: the pencil in the top bar), `show-on-hover` (true),
+`title-position` (`top`, `center`), `title-size` (`small`, `large`, `huge`). A title's settings are read when a popup is
 made, so a change shows on the next switch.
 
 ## Running next to other extensions

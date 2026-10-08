@@ -1,5 +1,6 @@
 import Atk from 'gi://Atk';
 import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
 import Shell from 'gi://Shell';
@@ -14,6 +15,10 @@ import {WorkspaceSwitcherPopup} from 'resource:///org/gnome/shell/ui/workspaceSw
 import {WorkspaceTitlesNames} from './names.js';
 import {WorkspaceTitlesRenameDialog} from './renameDialog.js';
 import {WorkspaceTitlesTitle} from './title.js';
+
+// A hover this long on the workspace indicator shows the title, and showing it
+// again this often keeps it up, inside the popup's own 600 ms.
+const HOVER_DELAY = 500;
 
 const WorkspaceTitlesIndicator = GObject.registerClass(
 class WorkspaceTitlesIndicator extends PanelMenu.Button {
@@ -75,6 +80,18 @@ export class WorkspaceTitlesApp {
             Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
             () => this._rename());
 
+        Main.panel.statusArea.activities.connectObject('notify::hover', button => {
+            if (this._hoverId)
+                GLib.Source.remove(this._hoverId);
+            this._hoverId = 0;
+            if (button.hover && this._settings.get_boolean('show-on-hover')) {
+                this._hoverId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, HOVER_DELAY, () => {
+                    this._show(global.workspace_manager.get_active_workspace_index());
+                    return GLib.SOURCE_CONTINUE;
+                });
+            }
+        }, this);
+
         this._settings.connectObject('changed::show-indicator', () => this._syncIndicator(), this);
         this._syncIndicator();
     }
@@ -83,6 +100,10 @@ export class WorkspaceTitlesApp {
         this._injections.clear();
         this._injections = null;
         Main.wm.removeKeybinding('rename-shortcut');
+        Main.panel.statusArea.activities.disconnectObject(this);
+        if (this._hoverId)
+            GLib.Source.remove(this._hoverId);
+        this._hoverId = 0;
         this._settings.disconnectObject(this);
         this._settings = null;
         this._dialog?.destroy();
@@ -122,15 +143,23 @@ export class WorkspaceTitlesApp {
             if (index < 0)
                 return;
             this._names.set(index, name);
-            // Show the new name as a keyboard switch would.
-            if (name.trim() && !Main.overview.visible) {
-                this._popup = new WorkspaceSwitcherPopup();
-                this._popup.connect('destroy', () => (this._popup = null));
-                this._popup.display(index);
-            }
+            this._show(index);
         });
         this._dialog.connect('destroy', () => (this._dialog = null));
         this._dialog.open();
+    }
+
+    // The popup as a keyboard switch shows it, for a workspace with a name.
+    _show(index) {
+        if (Main.overview.visible || !this._names.get(index)) {
+            this._popup?.destroy();
+            return;
+        }
+        if (!this._popup) {
+            this._popup = new WorkspaceSwitcherPopup();
+            this._popup.connect('destroy', () => (this._popup = null));
+        }
+        this._popup.display(index);
     }
 
     _syncIndicator() {

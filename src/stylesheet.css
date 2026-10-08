@@ -1,0 +1,27 @@
+/* The box also carries .workspace-switcher, so its background, border and radius
+ * are the dots' own, and whatever restyles them restyles it. */
+
+.workspace-switcher.workspace-titles-title {
+    margin-bottom: 0;
+}
+
+.workspace-switcher.workspace-titles-top {
+    margin-top: 2em;
+}
+
+.workspace-titles-label {
+    font-weight: bold;
+    padding: 0 0.3em;
+}
+
+.workspace-titles-small {
+    font-size: 1.5em;
+}
+
+.workspace-titles-large {
+    font-size: 2.5em;
+}
+
+.workspace-titles-huge {
+    font-size: 4em;
+}

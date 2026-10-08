@@ -5,7 +5,8 @@ Name your workspaces and see the name in large type when you switch to one.
 When you switch workspaces with the keyboard, GNOME shows a row of dots near the bottom
 of the screen. Workspace Titles adds the workspace's name near the top, in the same
 rounded box as the dots, appearing and fading with them. A workspace without a name shows
-no title.
+no title. To see the current workspace's title without switching, rest the pointer on the
+workspace dots at the left of the top bar for half a second.
 
 To name the workspace you are on, press **Super+F2** or click the pencil in the top bar,
 type the name and press Enter. Leave the name empty to remove it.
@@ -46,6 +47,8 @@ To update, pull and `make install` again; to remove it, `make uninstall`.
 - **Rename Shortcut**: Super+F2 to begin with. Click the row and press a new one,
   with Ctrl, Alt or Super; Backspace removes it.
 - **Top Bar Button**: the pencil that renames the current workspace.
+- **Show on Hover**: the title shows while the pointer rests on the workspace dots in
+  the top bar.
 - **Position**: the title at the top of the screen, or in its middle.
 - **Size**: small, large or huge.
 

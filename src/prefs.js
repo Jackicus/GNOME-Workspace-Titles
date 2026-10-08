@@ -30,6 +30,12 @@ export default class WorkspaceTitlesPreferences extends ExtensionPreferences {
             title: 'Title',
             description: 'Shown with the workspace switcher when a named workspace is switched to.',
         });
+        const hover = new Adw.SwitchRow({
+            title: 'Show on Hover',
+            subtitle: 'Rest the pointer on the workspace indicator in the top bar',
+        });
+        settings.bind('show-on-hover', hover, 'active', Gio.SettingsBindFlags.DEFAULT);
+        title.add(hover);
         title.add(comboRow(settings, 'title-position', 'Position', POSITIONS));
         title.add(comboRow(settings, 'title-size', 'Size', SIZES));
         page.add(title);

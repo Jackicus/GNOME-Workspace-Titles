@@ -20,6 +20,11 @@
             <summary>Show the rename button</summary>
             <description>Whether a button in the top bar opens the rename dialog.</description>
         </key>
+        <key name="show-on-hover" type="b">
+            <default>true</default>
+            <summary>Show the title on hover</summary>
+            <description>Whether resting the pointer on the workspace indicator at the left of the top bar shows the current workspace's title.</description>
+        </key>
         <key name="title-position" enum="org.gnome.shell.extensions.workspace-titles.position">
             <default>'top'</default>
             <summary>Where the title is shown</summary>

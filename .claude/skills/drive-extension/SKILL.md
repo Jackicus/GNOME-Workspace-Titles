@@ -29,6 +29,8 @@ never shows. Give it four, and names, in its own settings:
   x 1383 at y 14, further left when a screen-sharing or microphone indicator is up.
 - **Renaming**: `key Super+F2` opens the dialog with the name selected; type, `key
   Return`. The popup then shows the new name.
+- **Hover**: `move 40 14` is on the workspace dots (the Activities button), clear of the
+  hot corner; the title shows about 0.5 s later and stays until a `move` away.
 - **Inserting**: with dynamic workspaces, `click` a window on the first workspace to
   focus it, then `key Super+Shift+Page_Up`; a workspace switch alone leaves no focus.
 - **Names following workspaces** needs windows: `./scripts/nested.sh run gjs -m win.js`

@@ -45,7 +45,9 @@ scripts/ext.conf          what the kit's scripts need to know about this extensi
   of the first) is `Main.wm.insertWorkspace(pos)`: it appends a workspace and moves every
   window from `pos` on along by one, so no workspace moves. `app.js` wraps it to put an
   empty name in at `pos` first (`names.js` `insert`).
-- **Renaming** keeps the `Meta.Workspace`, not its index, while the dialog is open.
+- **Renaming** keeps the `Meta.Workspace`, not its index, while the dialog is open. The
+  popup it puts up afterwards is destroyed when any other popup displays, so a quick
+  switch never shows two.
 
 ## Settings
 

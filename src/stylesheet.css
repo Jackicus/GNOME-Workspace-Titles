@@ -1,5 +1,4 @@
-/* The box also carries .workspace-switcher, so its background, border and radius
- * are the dots' own, and whatever restyles them restyles it. */
+/* The box also carries .workspace-switcher: the dots' own background and shape. */
 
 .workspace-switcher.workspace-titles-title {
     margin-bottom: 0;

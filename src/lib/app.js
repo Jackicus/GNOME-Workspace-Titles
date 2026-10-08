@@ -1,3 +1,4 @@
+import Atk from 'gi://Atk';
 import Clutter from 'gi://Clutter';
 import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
@@ -16,15 +17,24 @@ import {WorkspaceTitlesTitle} from './title.js';
 
 const WorkspaceTitlesIndicator = GObject.registerClass(
 class WorkspaceTitlesIndicator extends PanelMenu.Button {
-    _init(name, onClick) {
+    _init(name, onActivate) {
         super._init(0.5, name, true);
+        this.accessible_role = Atk.Role.PUSH_BUTTON;
+        this._onActivate = onActivate;
         this.add_child(new St.Icon({
             icon_name: 'document-edit-symbolic',
             style_class: 'system-status-icon',
         }));
         const click = new Clutter.ClickGesture();
-        click.connect('recognize', onClick);
+        click.connect('recognize', onActivate);
         this.add_action(click);
+    }
+
+    vfunc_key_release_event(event) {
+        if (![Clutter.KEY_Return, Clutter.KEY_KP_Enter, Clutter.KEY_space].includes(event.get_key_symbol()))
+            return super.vfunc_key_release_event(event);
+        this._onActivate();
+        return Clutter.EVENT_STOP;
     }
 });
 
@@ -44,6 +54,8 @@ export class WorkspaceTitlesApp {
         this._injections = new InjectionManager();
         this._injections.overrideMethod(WorkspaceSwitcherPopup.prototype, 'display', display => {
             return function (index) {
+                if (this !== app._popup)
+                    app._popup?.destroy();
                 if (!this.get_children().some(child => app._titles.has(child)))
                     app._addTitles(this);
                 display.call(this, index);
@@ -74,6 +86,7 @@ export class WorkspaceTitlesApp {
         this._settings.disconnectObject(this);
         this._settings = null;
         this._dialog?.destroy();
+        this._popup?.destroy();
         this._indicator?.destroy();
         this._indicator = null;
         for (const title of this._titles)
@@ -109,9 +122,12 @@ export class WorkspaceTitlesApp {
             if (index < 0)
                 return;
             this._names.set(index, name);
-            // Shown as a switch to it would show it.
-            if (name.trim() && !Main.overview.visible)
-                new WorkspaceSwitcherPopup().display(index);
+            // Show the new name as a keyboard switch would.
+            if (name.trim() && !Main.overview.visible) {
+                this._popup = new WorkspaceSwitcherPopup();
+                this._popup.connect('destroy', () => (this._popup = null));
+                this._popup.display(index);
+            }
         });
         this._dialog.connect('destroy', () => (this._dialog = null));
         this._dialog.open();

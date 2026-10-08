@@ -3,8 +3,7 @@ import GObject from 'gi://GObject';
 import St from 'gi://St';
 
 // One monitor's title inside the shell's workspace switcher popup, which calls
-// redisplay() on each of its children. The box carries the switcher's own style
-// class, so the theme and anything restyling the dots style the title alike.
+// redisplay() on each of its children.
 export const WorkspaceTitlesTitle = GObject.registerClass(
 class WorkspaceTitlesTitle extends Clutter.Actor {
     constructor(constraint, names, position, size) {

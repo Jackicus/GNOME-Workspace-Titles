@@ -43,8 +43,8 @@ To update, pull and `make install` again; to remove it, `make uninstall`.
 
 ## Preferences
 
-- **Rename Shortcut**: Super+F2 to begin with. Click the row and press a new one;
-  Backspace removes it.
+- **Rename Shortcut**: Super+F2 to begin with. Click the row and press a new one,
+  with Ctrl, Alt or Super; Backspace removes it.
 - **Top Bar Button**: the pencil that renames the current workspace.
 - **Position**: the title at the top of the screen, or in its middle.
 - **Size**: small, large or huge.

@@ -38,7 +38,7 @@ export default class WorkspaceTitlesPreferences extends ExtensionPreferences {
     }
 
     _shortcutRow(window, settings) {
-        const label = new Gtk.ShortcutLabel({disabled_text: 'Disabled', valign: Gtk.Align.CENTER});
+        const label = new Adw.ShortcutLabel({disabled_text: 'Disabled', valign: Gtk.Align.CENTER});
         const row = new Adw.ActionRow({title: 'Rename Shortcut', activatable: true});
         row.add_suffix(label);
         const sync = () => (label.accelerator = settings.get_strv('rename-shortcut')[0] ?? '');
@@ -52,11 +52,11 @@ export default class WorkspaceTitlesPreferences extends ExtensionPreferences {
         const status = new Adw.StatusPage({
             icon_name: 'preferences-desktop-keyboard-shortcuts-symbolic',
             title: 'Rename Shortcut',
-            description: 'Press the new shortcut. Esc cancels, Backspace removes it.',
+            description: 'Press the new shortcut, with Ctrl, Alt or Super. Esc cancels, Backspace removes it.',
         });
         const toolbar = new Adw.ToolbarView({content: status});
         toolbar.add_top_bar(new Adw.HeaderBar());
-        const dialog = new Adw.Dialog({title: 'Set Shortcut', content_width: 440, child: toolbar});
+        const dialog = new Adw.Dialog({title: 'Rename Shortcut', content_width: 440, child: toolbar});
 
         const keys = new Gtk.EventControllerKey({propagation_phase: Gtk.PropagationPhase.CAPTURE});
         keys.connect('key-pressed', (_controller, keyval, _keycode, state) => {
@@ -67,7 +67,7 @@ export default class WorkspaceTitlesPreferences extends ExtensionPreferences {
             } else if (!mods && key === Gdk.KEY_BackSpace) {
                 settings.set_strv('rename-shortcut', []);
                 dialog.close();
-            } else if (mods && Gtk.accelerator_valid(key, mods)) {
+            } else if (mods & ~Gdk.ModifierType.SHIFT_MASK && Gtk.accelerator_valid(key, mods)) {
                 settings.set_strv('rename-shortcut', [Gtk.accelerator_name(key, mods)]);
                 dialog.close();
             }
@@ -85,7 +85,9 @@ export default class WorkspaceTitlesPreferences extends ExtensionPreferences {
 
 function comboRow(settings, key, title, choices) {
     const row = new Adw.ComboRow({title, model: Gtk.StringList.new(choices.map(([, label]) => label))});
-    row.selected = Math.max(0, choices.findIndex(([nick]) => nick === settings.get_string(key)));
+    const sync = () => (row.selected = choices.findIndex(([nick]) => nick === settings.get_string(key)));
+    settings.connect(`changed::${key}`, sync);
+    sync();
     row.connect('notify::selected', () => settings.set_string(key, choices[row.selected][0]));
     return row;
 }

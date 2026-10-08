@@ -2,6 +2,8 @@
 
 Name your workspaces and see the name in large type when you switch to one.
 
+![The title "Photo Edits" near the top of the screen, above the workspace switcher's dots, on the second of four workspaces](docs/screenshots/switch.jpg)
+
 When you switch workspaces with the keyboard, GNOME shows a row of dots near the bottom
 of the screen. Workspace Titles adds the workspace's name near the top, in the same
 rounded box as the dots, appearing and fading with them. A workspace without a name shows
@@ -10,6 +12,8 @@ workspace dots at the left of the top bar for half a second.
 
 To name the workspace you are on, press **Super+F2** or click the pencil in the top bar,
 type the name and press Enter. Leave the name empty to remove it.
+
+![The Rename Workspace dialog for workspace 2, with "Photo Edits" selected in its entry](docs/screenshots/rename.png)
 
 The names are GNOME's own (`org.gnome.desktop.wm.preferences workspace-names`), so other
 workspace tools show them too. GNOME matches those names to workspaces by position; this
@@ -43,6 +47,8 @@ turn it on in Extensions.
 To update, pull and `make install` again; to remove it, `make uninstall`.
 
 ## Preferences
+
+![The preferences: the rename shortcut Super+F2, the top-bar button, show on hover, and the title's position and size](docs/screenshots/preferences.png)
 
 - **Rename Shortcut**: Super+F2 to begin with. Click the row and press a new one,
   with Ctrl, Alt or Super; Backspace removes it.

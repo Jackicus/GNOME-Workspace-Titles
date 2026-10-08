@@ -17,6 +17,8 @@ src/lib/app.js            WorkspaceTitlesApp: the popup wrap, the shortcut, the 
 src/lib/title.js          WorkspaceTitlesTitle: one monitor's title inside the popup
 src/lib/names.js          WorkspaceTitlesNames: GNOME's workspace-names, kept with their workspaces
 src/lib/renameDialog.js   WorkspaceTitlesRenameDialog: a ModalDialog in the run dialog's style
+docs/publishing.md        how it answers the extensions.gnome.org review
+docs/screenshots/         the README's, taken under start --stand-in
 scripts/ext.conf          what the kit's scripts need to know about this extension
 ```
 

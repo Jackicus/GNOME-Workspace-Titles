@@ -38,4 +38,7 @@ never shows. Give it four, and names, in its own settings:
   dynamic workspaces on; kill one window's process by pid and its workspace closes.
 - **Never test the shortcut capture** in the preferences there: it asks to inhibit
   shortcuts, and the answer is written to the real permission store.
-- **Screenshots** go through `gnome-ext:screenshots`, under `start --stand-in`.
+- **Screenshots** go through `gnome-ext:screenshots`, under `start --stand-in --headless`,
+  with the stand-in names `['Writing', 'Photo Edits', 'Music']` set as above:
+  `switch.jpg` is a `Super+Page_Down` shot cropped below the top bar (`1600x868+0+32`),
+  `rename.png` the dialog (`shot … 560 300 480 300`), `preferences.png` the window.

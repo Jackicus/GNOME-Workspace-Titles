@@ -8,10 +8,9 @@ export class WorkspaceTitlesNames {
     constructor() {
         this._settings = new Gio.Settings({schema_id: 'org.gnome.desktop.wm.preferences'});
         this._workspaces = this._list();
-        global.workspace_manager.connectObject(
-            'workspace-added', () => this._follow(),
-            'workspace-removed', () => this._follow(),
-            'workspaces-reordered', () => this._follow(), this);
+        // Mutter emits it last on every add and removal, including a lowered
+        // num-workspaces, which emits no workspace-removed.
+        global.workspace_manager.connectObject('notify::n-workspaces', () => this._follow(), this);
     }
 
     destroy() {
@@ -28,6 +27,16 @@ export class WorkspaceTitlesNames {
             names.push('');
         names[index] = name.trim();
         this._write(names);
+    }
+
+    // The shell inserts a workspace by appending one and moving every window
+    // from pos on along by one, so the names move along with them.
+    insert(pos) {
+        const names = this._settings.get_strv(KEY);
+        if (pos < names.length) {
+            names.splice(pos, 0, '');
+            this._write(names);
+        }
     }
 
     _list() {

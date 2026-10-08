@@ -36,11 +36,16 @@ scripts/ext.conf          what the kit's scripts need to know about this extensi
   type size.
 - **Names** are `org.gnome.desktop.wm.preferences workspace-names`, never a key of ours.
   Mutter matches them by position, so `names.js` keeps a list of the `Meta.Workspace`s and,
-  on `workspace-added`/`-removed`/`workspaces-reordered`, rewrites the key so each name
-  stays with its workspace. A workspace added at the end takes the first stored name past
-  the old ones, as it would by position (names left from the last session apply again).
-  A workspace inserted at the front (moving a window left of the first) is appended and
-  reordered by the shell, so it takes that name too.
+  on `notify::n-workspaces` (emitted on every add and removal, a lowered static
+  `num-workspaces` included, which emits no `workspace-removed`), rewrites the key so each
+  name stays with its workspace. A workspace added at the end takes the first stored name
+  past the old ones, as it would by position (names left from the last session apply
+  again). The name of a workspace that closes goes with it.
+- **Inserting** (dropping a window between workspaces in the overview, or moving one left
+  of the first) is `Main.wm.insertWorkspace(pos)`: it appends a workspace and moves every
+  window from `pos` on along by one, so no workspace moves. `app.js` wraps it to put an
+  empty name in at `pos` first (`names.js` `insert`).
+- **Renaming** keeps the `Meta.Workspace`, not its index, while the dialog is open.
 
 ## Settings
 
@@ -54,6 +59,8 @@ made, so a change shows on the next switch.
 - Just Perfection's "workspace popup" off replaces `display` with a destroy: no popup, no
   title. Workspace Matrix shows its own popup instead of the shell's: no title either.
 - Anything else that rewrites `workspace-names` on removal would shift names twice.
+- The screen lock disables it (`session-modes` is `user`): a workspace that closes while
+  locked is not followed, and the names after it shift by one.
 
 ## Verifying
 

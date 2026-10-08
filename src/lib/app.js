@@ -50,6 +50,14 @@ export class WorkspaceTitlesApp {
             };
         });
 
+        this._injections.overrideMethod(Main.wm, 'insertWorkspace', insertWorkspace => {
+            return function (pos) {
+                if (Meta.prefs_get_dynamic_workspaces())
+                    app._names.insert(pos);
+                insertWorkspace.call(this, pos);
+            };
+        });
+
         Main.wm.addKeybinding('rename-shortcut', this._settings,
             Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
             Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
@@ -93,9 +101,13 @@ export class WorkspaceTitlesApp {
     _rename() {
         if (this._dialog)
             return;
-        const index = global.workspace_manager.get_active_workspace_index();
-        this._dialog = new WorkspaceTitlesRenameDialog(index, this._names.get(index));
+        const workspace = global.workspace_manager.get_active_workspace();
+        this._dialog = new WorkspaceTitlesRenameDialog(workspace.index(), this._names.get(workspace.index()));
         this._dialog.connect('renamed', (_dialog, name) => {
+            // The workspace can close or move while the dialog is open.
+            const index = workspace.index();
+            if (index < 0)
+                return;
             this._names.set(index, name);
             // Shown as a switch to it would show it.
             if (name.trim() && !Main.overview.visible)

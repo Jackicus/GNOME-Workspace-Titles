@@ -12,21 +12,25 @@ The nested shell starts with dynamic workspaces and one workspace, where the swi
 never shows. Give it four, and names, in its own settings:
 
 ```bash
-G="./scripts/nested.sh run timeout 5 gsettings"
 ./scripts/nested.sh start --headless
-$G set org.gnome.mutter dynamic-workspaces false
-$G set org.gnome.desktop.wm.preferences num-workspaces 4
-$G set org.gnome.desktop.wm.preferences workspace-names "['First', '', 'Third']"
+./scripts/nested.sh run timeout 5 gsettings set org.gnome.mutter dynamic-workspaces false
+./scripts/nested.sh run timeout 5 gsettings set org.gnome.desktop.wm.preferences num-workspaces 4
+./scripts/nested.sh run timeout 5 gsettings set org.gnome.desktop.wm.preferences workspace-names "['First', '', 'Third']"
 ./scripts/nested.sh do "key Super+Page_Down" "wait 0.25" "shot $S/switch.png"
 ./scripts/nested.sh stop
 ```
 
 - **The popup lasts about 0.7 s**: shoot 0.2–0.3 s after the key, in the same `do`.
-- **Where it is**: the title is centred about 60 px below the top bar (or in the middle
-  with `title-position center`); the dots are at the bottom. The pencil is left of the
-  system menu, about x 1383 on a 1600-wide monitor.
+  The first `shot` after a `start` takes longer than that, so a first switch shows
+  neither dots nor title: take a throwaway `shot` first.
+- **Where it is**: the title is centred just below the top bar, its box about y 57–127
+  on a 1600x900 monitor at `large` (in the middle with `title-position center`); the
+  dots are at the bottom. The pencil is the first icon left of the system menu, about
+  x 1383 at y 14, further left when a screen-sharing or microphone indicator is up.
 - **Renaming**: `key Super+F2` opens the dialog with the name selected; type, `key
   Return`. The popup then shows the new name.
+- **Inserting**: with dynamic workspaces, `click` a window on the first workspace to
+  focus it, then `key Super+Shift+Page_Up`; a workspace switch alone leaves no focus.
 - **Names following workspaces** needs windows: `./scripts/nested.sh run gjs -m win.js`
   with a few-line Gtk 4 window script in the scratch folder, one per workspace with
   dynamic workspaces on; kill one window's process by pid and its workspace closes.

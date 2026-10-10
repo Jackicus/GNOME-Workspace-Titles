@@ -12,8 +12,8 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 import {WorkspaceSwitcherPopup} from 'resource:///org/gnome/shell/ui/workspaceSwitcherPopup.js';
 
+import {WorkspaceTitlesEditor} from './editor.js';
 import {WorkspaceTitlesNames} from './names.js';
-import {WorkspaceTitlesRenameDialog} from './renameDialog.js';
 import {WorkspaceTitlesTitle} from './title.js';
 
 // A hover this long on the workspace indicator shows the title, and showing it
@@ -120,7 +120,7 @@ export class WorkspaceTitlesApp {
         this._hoverId = 0;
         this._settings.disconnectObject(this);
         this._settings = null;
-        this._dialog?.destroy();
+        this._editor?.destroy();
         this._popup?.destroy();
         this._indicator?.destroy();
         this._indicator = null;
@@ -147,20 +147,28 @@ export class WorkspaceTitlesApp {
     }
 
     _rename() {
-        if (this._dialog)
+        if (this._editor)
             return;
+        this._popup?.destroy();
         const workspace = global.workspace_manager.get_active_workspace();
-        this._dialog = new WorkspaceTitlesRenameDialog(workspace.index(), this._names.get(workspace.index()));
-        this._dialog.connect('renamed', (_dialog, name) => {
-            // The workspace can close or move while the dialog is open.
+        const monitor = Meta.prefs_get_workspaces_only_on_primary()
+            ? Main.layoutManager.primaryIndex
+            : global.display.get_current_monitor();
+        this._editor = new WorkspaceTitlesEditor(
+            new Layout.MonitorConstraint({index: monitor, work_area: true}), this._names,
+            this._settings.get_string('title-position'), this._settings.get_string('title-size'),
+            workspace.index());
+        this._editor.connect('renamed', (_editor, name) => {
+            // The workspace can close or move while the editor is open.
             const index = workspace.index();
             if (index < 0)
                 return;
             this._names.set(index, name);
             this._show(index);
         });
-        this._dialog.connect('destroy', () => (this._dialog = null));
-        this._dialog.open();
+        this._editor.connect('destroy', () => (this._editor = null));
+        Main.uiGroup.add_child(this._editor);
+        this._editor.open();
     }
 
     // The popup as a keyboard switch shows it, for a workspace with a name.

@@ -10,10 +10,11 @@ rounded box as the dots, appearing and fading with them. A workspace without a n
 no title. To see the current workspace's title without switching, rest the pointer on the
 workspace dots at the left of the top bar for half a second.
 
-To name the workspace you are on, press **Super+F2** or click the pencil in the top bar,
-type the name and press Enter. Leave the name empty to remove it.
+To name the workspace you are on, press **Super+F2** or click the pencil in the top bar:
+the title opens for editing, with ✕ to remove the name and ✓ to keep it. Type the name and
+press Enter; Escape or a click elsewhere leaves it as it was.
 
-![The Rename Workspace dialog for workspace 2, with "Photo Edits" selected in its entry](docs/screenshots/rename.png)
+![The title being edited: "Photo Edits" selected, with a clear button left of it and a confirm button right of it](docs/screenshots/rename.png)
 
 The names are GNOME's own (`org.gnome.desktop.wm.preferences workspace-names`), so other
 workspace tools show them too. GNOME matches those names to workspaces by position; this

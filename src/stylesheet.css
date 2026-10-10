@@ -2,6 +2,7 @@
 
 .workspace-switcher.workspace-titles-title {
     margin-bottom: 0;
+    spacing: 0;
 }
 
 .workspace-switcher.workspace-titles-top {
@@ -11,6 +12,56 @@
 .workspace-titles-label {
     font-weight: bold;
     padding: 0 0.3em;
+}
+
+/* The editor sits on the popup's dark surface in either colour scheme, and a rule
+   here outranks the theme's entry and button rules, so it sets their colours too. */
+
+.workspace-titles-entry {
+    color: inherit;
+    background-color: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    min-height: 0;
+}
+
+.workspace-titles-entry StLabel.hint-text {
+    color: st-transparentize(#ffffff, 0.5);
+}
+
+.workspace-titles-button {
+    color: inherit;
+    background-color: transparent;
+    padding: 0.4em;
+}
+
+.workspace-titles-button:hover {
+    background-color: st-transparentize(#ffffff, 0.9);
+}
+
+.workspace-titles-button:active {
+    background-color: st-transparentize(#ffffff, 0.8);
+}
+
+.workspace-titles-button:focus {
+    background-color: st-transparentize(#ffffff, 0.9);
+    box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.2);
+}
+
+.workspace-titles-button StIcon {
+    icon-size: 1.6em;
+}
+
+.workspace-titles-button.workspace-titles-small {
+    font-size: 1em;
+}
+
+.workspace-titles-button.workspace-titles-large {
+    font-size: 1.5em;
+}
+
+.workspace-titles-button.workspace-titles-huge {
+    font-size: 2.4em;
 }
 
 .workspace-titles-small {

@@ -12,15 +12,15 @@ class WorkspaceTitlesTitle extends Clutter.Actor {
         this._names = names;
 
         this._label = new St.Label({style_class: `workspace-titles-label workspace-titles-${size}`});
-        const box = new St.BoxLayout({
+        this._box = new St.BoxLayout({
             style_class: `workspace-switcher workspace-titles-title workspace-titles-${position}`,
             x_align: Clutter.ActorAlign.CENTER,
             y_align: position === 'top' ? Clutter.ActorAlign.START : Clutter.ActorAlign.CENTER,
             x_expand: true,
             y_expand: true,
         });
-        box.add_child(this._label);
-        this.add_child(box);
+        this._box.add_child(this._label);
+        this.add_child(this._box);
     }
 
     redisplay(index) {

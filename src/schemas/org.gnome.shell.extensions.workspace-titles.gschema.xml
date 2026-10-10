@@ -18,12 +18,12 @@
         <key name="rename-shortcut" type="as">
             <default><![CDATA[['<Super>F2']]]></default>
             <summary>Rename the current workspace</summary>
-            <description>Opens the dialog that names the workspace in view. Empty is no shortcut.</description>
+            <description>Opens the title of the workspace in view for editing. Empty is no shortcut.</description>
         </key>
         <key name="show-indicator" type="b">
             <default>true</default>
             <summary>Show the rename button</summary>
-            <description>Whether a button in the top bar opens the rename dialog.</description>
+            <description>Whether a button in the top bar opens the title for editing.</description>
         </key>
         <key name="indicator-position" enum="org.gnome.shell.extensions.workspace-titles.indicator-position">
             <default>'left'</default>

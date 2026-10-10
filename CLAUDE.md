@@ -4,7 +4,7 @@ Shared rules for every extension come from the GNOME-EXTENSIONS kit: `../CLAUDE.
 
 A GNOME Shell extension (UUID `workspace-titles@jackicus`, `version-name` 0.1, shell 50):
 the name of a workspace, in large type, shown with the shell's workspace switcher
-popup (the dots) when it is switched to, and a dialog to name the current one.
+popup (the dots) when it is switched to, and edited in place to name the current one.
 
 ## Layout
 
@@ -16,7 +16,7 @@ src/stylesheet.css        the title's size and placement; the rest is the theme'
 src/lib/app.js            WorkspaceTitlesApp: the popup wrap, the shortcut, the top-bar button
 src/lib/title.js          WorkspaceTitlesTitle: one monitor's title inside the popup
 src/lib/names.js          WorkspaceTitlesNames: GNOME's workspace-names, kept with their workspaces
-src/lib/renameDialog.js   WorkspaceTitlesRenameDialog: a ModalDialog in the run dialog's style
+src/lib/editor.js         WorkspaceTitlesEditor: the title as an entry, with clear and confirm buttons
 docs/publishing.md        how it answers the extensions.gnome.org review
 docs/screenshots/         the README's, taken under start --stand-in
 scripts/ext.conf          what the kit's scripts need to know about this extension
@@ -52,9 +52,17 @@ scripts/ext.conf          what the kit's scripts need to know about this extensi
   every 500 ms, inside the popup's own 600 ms timeout, so it stays while the pointer does
   and fades as a switch's does once it leaves. `_show` is the one way the extension puts a
   popup up (hover and rename): only for a named workspace, never over the overview.
-- **Renaming** keeps the `Meta.Workspace`, not its index, while the dialog is open. The
-  popup it puts up afterwards is destroyed when any other popup displays, so a quick
-  switch never shows two.
+- **Renaming** is a `WorkspaceTitlesEditor`: a `WorkspaceTitlesTitle` of its own in
+  `uiGroup` (the popup is not reactive and closes itself), holding a `pushModal` grab, on
+  the pointer's monitor. Each button is in a clipped `St.Widget` slot whose width eases
+  open (an `St.Widget`, so focus navigation reaches it). On save the slots close, then the
+  popup is put up and fades in over the editor before it goes. ✕ saves an empty name;
+  Escape or a click outside cancels. `app.js` keeps the `Meta.Workspace`, not its index,
+  while the editor is open. The popup it puts up afterwards is destroyed when any other
+  popup displays, so a quick switch never shows two.
+- **The editor's colours are ours**: an extension's rule outranks every theme rule, even
+  `!important`, so `stylesheet.css` sets the entry's and buttons' colours for the popup's
+  dark surface (dark in both schemes); an inset focus ring draws only over a background.
 
 ## Settings
 

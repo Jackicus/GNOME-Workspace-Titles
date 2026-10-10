@@ -48,11 +48,13 @@ To update, pull and `make install` again; to remove it, `make uninstall`.
 
 ## Preferences
 
-![The preferences: the rename shortcut Super+F2, the top-bar button, show on hover, and the title's position and size](docs/screenshots/preferences.png)
+![The preferences: the rename shortcut Super+F2, the top-bar button and its position (left), show on hover, and the title's position and size](docs/screenshots/preferences.png)
 
 - **Rename Shortcut**: Super+F2 to begin with. Click the row and press a new one,
   with Ctrl, Alt or Super; Backspace removes it.
 - **Top Bar Button**: the pencil that renames the current workspace.
+- **Button Position**: left, just right of the workspace dots (to begin with); center,
+  right of the clock; or right, beside the system menu.
 - **Show on Hover**: the title shows while the pointer rests on the workspace dots in
   the top bar.
 - **Position**: the title at the top of the screen, or in its middle.

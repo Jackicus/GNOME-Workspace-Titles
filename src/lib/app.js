@@ -20,6 +20,14 @@ import {WorkspaceTitlesTitle} from './title.js';
 // again this often keeps it up, inside the popup's own 600 ms.
 const HOVER_DELAY = 500;
 
+// The panel box and index for each indicator-position: left is just right of the
+// Activities button, center right of the clock.
+const INDICATOR_PLACES = {
+    left: ['left', 1],
+    center: ['center', -1],
+    right: ['right', 0],
+};
+
 const WorkspaceTitlesIndicator = GObject.registerClass(
 class WorkspaceTitlesIndicator extends PanelMenu.Button {
     _init(name, onActivate) {
@@ -92,7 +100,13 @@ export class WorkspaceTitlesApp {
             }
         }, this);
 
-        this._settings.connectObject('changed::show-indicator', () => this._syncIndicator(), this);
+        this._settings.connectObject(
+            'changed::show-indicator', () => this._syncIndicator(),
+            'changed::indicator-position', () => {
+                this._indicator?.destroy();
+                this._indicator = null;
+                this._syncIndicator();
+            }, this);
         this._syncIndicator();
     }
 
@@ -166,7 +180,8 @@ export class WorkspaceTitlesApp {
         const show = this._settings.get_boolean('show-indicator');
         if (show && !this._indicator) {
             this._indicator = new WorkspaceTitlesIndicator(this._extension.metadata.name, () => this._rename());
-            Main.panel.addToStatusArea(this._extension.uuid, this._indicator);
+            const [box, index] = INDICATOR_PLACES[this._settings.get_string('indicator-position')];
+            Main.panel.addToStatusArea(this._extension.uuid, this._indicator, index, box);
         } else if (!show && this._indicator) {
             this._indicator.destroy();
             this._indicator = null;

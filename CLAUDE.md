@@ -59,7 +59,8 @@ scripts/ext.conf          what the kit's scripts need to know about this extensi
 ## Settings
 
 `rename-shortcut` (`['<Super>F2']`, grabbed with `Main.wm.addKeybinding`),
-`show-indicator` (true: the pencil in the top bar), `show-on-hover` (true),
+`show-indicator` (true: the pencil in the top bar), `indicator-position` (`left`, right
+of the Activities button; `center`, right of the clock; `right`), `show-on-hover` (true),
 `title-position` (`top`, `center`), `title-size` (`small`, `large`, `huge`). A title's settings are read when a popup is
 made, so a change shows on the next switch.
 

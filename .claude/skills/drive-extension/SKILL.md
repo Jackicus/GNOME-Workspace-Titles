@@ -1,6 +1,6 @@
 ---
 name: drive-extension
-description: See Workspace Titles in a throwaway nested GNOME Shell - the title with the workspace switcher dots, the rename dialog, the top-bar pencil and the preferences - and take screenshots of it. Use whenever a change to it must be seen or needs a fresh shell start (extension.js, metadata.json, the schema).
+description: See Workspace Titles in a throwaway nested GNOME Shell - the title with the workspace switcher dots, the title editor, the top-bar pencil and the preferences - and take screenshots of it. Use whenever a change to it must be seen or needs a fresh shell start (extension.js, metadata.json, the schema).
 ---
 
 # Driving Workspace Titles in a nested shell
@@ -27,8 +27,10 @@ never shows. Give it four, and names, in its own settings:
   on a 1600x900 monitor at `large` (in the middle with `title-position center`); the
   dots are at the bottom. The pencil is just right of the workspace dots, about x 118
   at y 14 (`indicator-position` `left`, the default).
-- **Renaming**: `key Super+F2` opens the dialog with the name selected; type, `key
-  Return`. The popup then shows the new name.
+- **Renaming**: `key Super+F2` (or `click 118 14`) opens the title as an editor with the
+  name selected, ✕ left and ✓ right of it; type one `key` per letter (`say` does not
+  type), `key Return`. The popup then shows the new name. The buttons are about 80 px
+  either side of the name's ends at y 92 (`large`, `top`); `key Tab` reaches them.
 - **Hover**: `move 40 14` is on the workspace dots (the Activities button), clear of the
   hot corner; the title shows about 0.5 s later and stays until a `move` away.
 - **Inserting**: with dynamic workspaces, `click` a window on the first workspace to
@@ -41,4 +43,4 @@ never shows. Give it four, and names, in its own settings:
 - **Screenshots** go through `gnome-ext:screenshots`, under `start --stand-in --headless`,
   with the stand-in names `['Writing', 'Photo Edits', 'Music']` set as above:
   `switch.jpg` is a `Super+Page_Down` shot cropped below the top bar (`1600x868+0+32`),
-  `rename.png` the dialog (`shot … 560 300 480 300`), `preferences.png` the window.
+  `rename.png` the editor, 0.4 s after `key Super+F2` on Photo Edits (`shot … 500 40 600 110`), `preferences.png` the window.

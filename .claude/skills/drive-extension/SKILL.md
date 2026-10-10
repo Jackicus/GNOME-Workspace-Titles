@@ -25,8 +25,8 @@ never shows. Give it four, and names, in its own settings:
   neither dots nor title: take a throwaway `shot` first.
 - **Where it is**: the title is centred just below the top bar, its box about y 57–127
   on a 1600x900 monitor at `large` (in the middle with `title-position center`); the
-  dots are at the bottom. The pencil is the first icon left of the system menu, about
-  x 1383 at y 14, further left when a screen-sharing or microphone indicator is up.
+  dots are at the bottom. The pencil is just right of the workspace dots, about x 118
+  at y 14 (`indicator-position` `left`, the default).
 - **Renaming**: `key Super+F2` opens the dialog with the name selected; type, `key
   Return`. The popup then shows the new name.
 - **Hover**: `move 40 14` is on the workspace dots (the Activities button), clear of the

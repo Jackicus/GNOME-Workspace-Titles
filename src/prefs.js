@@ -6,6 +6,7 @@ import Gtk from 'gi://Gtk';
 import {ExtensionPreferences} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
 const POSITIONS = [['top', 'Top'], ['center', 'Center']];
+const PLACES = [['left', 'Left'], ['center', 'Center'], ['right', 'Right']];
 const SIZES = [['small', 'Small'], ['large', 'Large'], ['huge', 'Huge']];
 
 export default class WorkspaceTitlesPreferences extends ExtensionPreferences {
@@ -24,6 +25,9 @@ export default class WorkspaceTitlesPreferences extends ExtensionPreferences {
         });
         settings.bind('show-indicator', button, 'active', Gio.SettingsBindFlags.DEFAULT);
         rename.add(button);
+        const place = comboRow(settings, 'indicator-position', 'Button Position', PLACES);
+        settings.bind('show-indicator', place, 'sensitive', Gio.SettingsBindFlags.GET);
+        rename.add(place);
         page.add(rename);
 
         const title = new Adw.PreferencesGroup({
@@ -41,6 +45,7 @@ export default class WorkspaceTitlesPreferences extends ExtensionPreferences {
         page.add(title);
 
         window.add(page);
+        window.default_height = 640;
     }
 
     _shortcutRow(window, settings) {

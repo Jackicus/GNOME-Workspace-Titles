@@ -9,6 +9,11 @@
         <value nick="large" value="1"/>
         <value nick="huge" value="2"/>
     </enum>
+    <enum id="org.gnome.shell.extensions.workspace-titles.indicator-position">
+        <value nick="left" value="0"/>
+        <value nick="center" value="1"/>
+        <value nick="right" value="2"/>
+    </enum>
     <schema id="org.gnome.shell.extensions.workspace-titles" path="/org/gnome/shell/extensions/workspace-titles/">
         <key name="rename-shortcut" type="as">
             <default><![CDATA[['<Super>F2']]]></default>
@@ -19,6 +24,11 @@
             <default>true</default>
             <summary>Show the rename button</summary>
             <description>Whether a button in the top bar opens the rename dialog.</description>
+        </key>
+        <key name="indicator-position" enum="org.gnome.shell.extensions.workspace-titles.indicator-position">
+            <default>'left'</default>
+            <summary>Where the rename button is</summary>
+            <description>Left, just right of the workspace indicator; centre, right of the clock; or right, left of the system menu.</description>
         </key>
         <key name="show-on-hover" type="b">
             <default>true</default>

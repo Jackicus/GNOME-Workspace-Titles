@@ -16,8 +16,11 @@ only; 50 can no longer be booted here.
   `Main.wm.insertWorkspace` and `addKeybinding`, `Main.panel.statusArea.activities` and
   its `hover`, `PanelMenu.Button`'s `_init(alignment, name, dontCreateMenu)`,
   `Layout.MonitorConstraint`, `Main.pushModal`, `St.Entry`'s `hint_text` and
-  `clutter_text`. Key-press vfuncs still run; connecting to the event signals is
-  deprecated in 51 and none is connected here.
+  `clutter_text`.
+- **Event signals give way to controllers**: 51 deprecates connecting to the event signals,
+  and its own `js/` overrides none of their vfuncs. The pencil's Return and space are a
+  `Clutter.KeyController`, the editor's Escape another, and its press outside the box a
+  `Clutter.ClickGesture` that recognizes on press, as `PopupMenuManager` closes a menu.
 - Seen working: the title on a keyboard switch (none for an unnamed workspace), hover on
   the workspace dots, the pencil, renaming by typing, ✕ by click, Tab, Shift+Tab and the
   arrows between the entry and its buttons, Escape and a click outside, the editor over

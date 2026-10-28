@@ -41,6 +41,22 @@ export const WorkspaceTitlesEditor = GObject.registerClass({
         // The focus group navigates with a key controller, which only a reactive actor runs.
         this._box.reactive = true;
         global.focus_manager.add_group(this._box);
+
+        const keys = new Clutter.KeyController();
+        keys.connect('key-press', () => {
+            const [, symbol] = keys.get_key();
+            if (symbol !== Clutter.KEY_Escape)
+                return Clutter.EVENT_PROPAGATE;
+            this._cancel();
+            return Clutter.EVENT_STOP;
+        });
+        this.add_action(keys);
+        // A press outside the box cancels, as a click outside closes a menu.
+        const outside = new Clutter.ClickGesture({recognize_on_press: true});
+        outside.connect('may-recognize', () =>
+            !this._box.contains(global.stage.get_event_actor(outside.get_point_event(0))));
+        outside.connect('recognize', () => this._cancel());
+        this.add_action(outside);
         this.connect('destroy', () => this._popModal());
     }
 
@@ -116,19 +132,5 @@ export const WorkspaceTitlesEditor = GObject.registerClass({
         if (this._grab)
             Main.popModal(this._grab);
         this._grab = null;
-    }
-
-    vfunc_key_press_event(event) {
-        if (event.get_key_symbol() !== Clutter.KEY_Escape)
-            return Clutter.EVENT_PROPAGATE;
-        this._cancel();
-        return Clutter.EVENT_STOP;
-    }
-
-    vfunc_button_press_event(event) {
-        if (this._box.contains(global.stage.get_event_actor(event)))
-            return Clutter.EVENT_PROPAGATE;
-        this._cancel();
-        return Clutter.EVENT_STOP;
     }
 });

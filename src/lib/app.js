@@ -33,7 +33,6 @@ class WorkspaceTitlesIndicator extends PanelMenu.Button {
     _init(name, onActivate) {
         super._init(0.5, name, true);
         this.accessible_role = Atk.Role.PUSH_BUTTON;
-        this._onActivate = onActivate;
         this.add_child(new St.Icon({
             icon_name: 'document-edit-symbolic',
             style_class: 'system-status-icon',
@@ -41,13 +40,15 @@ class WorkspaceTitlesIndicator extends PanelMenu.Button {
         const click = new Clutter.ClickGesture();
         click.connect('recognize', onActivate);
         this.add_action(click);
-    }
-
-    vfunc_key_release_event(event) {
-        if (![Clutter.KEY_Return, Clutter.KEY_KP_Enter, Clutter.KEY_space].includes(event.get_key_symbol()))
-            return super.vfunc_key_release_event(event);
-        this._onActivate();
-        return Clutter.EVENT_STOP;
+        const keys = new Clutter.KeyController();
+        keys.connect('key-release', () => {
+            const [, symbol] = keys.get_key();
+            if (![Clutter.KEY_Return, Clutter.KEY_KP_Enter, Clutter.KEY_space].includes(symbol))
+                return Clutter.EVENT_PROPAGATE;
+            onActivate();
+            return Clutter.EVENT_STOP;
+        });
+        this.add_action(keys);
     }
 });
 

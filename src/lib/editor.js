@@ -38,6 +38,8 @@ export const WorkspaceTitlesEditor = GObject.registerClass({
             this._addButton('object-select-symbolic', 'Rename', size, () => this._save(this._entry.text)),
         ];
         this._box.set_child_at_index(this._slots[0], 0);
+        // The focus group navigates with a key controller, which only a reactive actor runs.
+        this._box.reactive = true;
         global.focus_manager.add_group(this._box);
         this.connect('destroy', () => this._popModal());
     }
@@ -117,10 +119,9 @@ export const WorkspaceTitlesEditor = GObject.registerClass({
     }
 
     vfunc_key_press_event(event) {
-        if (event.get_key_symbol() === Clutter.KEY_Escape)
-            this._cancel();
-        else if (!global.focus_manager.navigate_from_event(event))
+        if (event.get_key_symbol() !== Clutter.KEY_Escape)
             return Clutter.EVENT_PROPAGATE;
+        this._cancel();
         return Clutter.EVENT_STOP;
     }
 

@@ -26,7 +26,7 @@ workspace switcher (Blur my Shell, Just Perfection) restyle the title with it.
 
 ## Requirements
 
-GNOME Shell 50.
+GNOME Shell 51.
 
 ## Privacy and network
 

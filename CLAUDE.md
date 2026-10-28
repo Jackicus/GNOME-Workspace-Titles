@@ -2,7 +2,7 @@
 
 Shared rules for every extension come from gnome-ai-kit: `../CLAUDE.md` and `../.claude/rules/` (loaded with this file), and the `gnome-ext:*` skills. `.claude/kit.sh` pulls the kit at session start, or, with no kit beside this repository, fetches it and prints its rules into the session.
 
-A GNOME Shell extension (UUID `workspace-titles@jackicus`, `version-name` 0.1, shell 50):
+A GNOME Shell extension (UUID `workspace-titles@jackicus`, `version-name` 0.1, shell 51):
 the name of a workspace, in large type, shown with the shell's workspace switcher
 popup (the dots) when it is switched to, and edited in place to name the current one.
 
@@ -18,6 +18,7 @@ src/lib/title.js          WorkspaceTitlesTitle: one monitor's title inside the p
 src/lib/names.js          WorkspaceTitlesNames: GNOME's workspace-names, kept with their workspaces
 src/lib/editor.js         WorkspaceTitlesEditor: the title as an entry, with clear and confirm buttons
 docs/publishing.md        how it answers the extensions.gnome.org review
+docs/compatibility.md     the shell versions read and booted, and what moved
 docs/screenshots/         the README's, taken under start --stand-in
 scripts/ext.conf          what the kit's scripts need to know about this extension
 ```
@@ -57,8 +58,9 @@ scripts/ext.conf          what the kit's scripts need to know about this extensi
   the pointer's monitor. Each button is in a clipped `St.Widget` slot whose width eases
   open (an `St.Widget`, so focus navigation reaches it). On save the slots close, then the
   popup is put up and fades in over the editor before it goes. ✕ saves an empty name;
-  Escape or a click outside cancels. `app.js` keeps the `Meta.Workspace`, not its index,
-  while the editor is open. The popup it puts up afterwards is destroyed when any other
+  Escape or a click outside cancels. The box is reactive: Shell 51's focus groups
+  navigate with a key controller, which only a reactive actor runs. `app.js` keeps the
+  `Meta.Workspace`, not its index, while the editor is open. The popup it puts up afterwards is destroyed when any other
   popup displays, so a quick switch never shows two.
 - **The editor's colours are ours**: an extension's rule outranks every theme rule, even
   `!important`, so `stylesheet.css` sets the entry's and buttons' colours for the popup's

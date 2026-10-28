@@ -3,7 +3,7 @@
   "name": "Workspace Titles",
   "description": "Name your workspaces and see the name in large type when you switch to one.",
   "settings-schema": "org.gnome.shell.extensions.workspace-titles",
-  "shell-version": [ "50" ],
+  "shell-version": [ "51" ],
   "url": "https://github.com/Jackicus/GNOME-Workspace-Titles",
   "version-name": "0.1"
 }
